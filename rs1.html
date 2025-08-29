@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SAATHI - New Registration</title>
+  <style>
+    :root{
+      --teal:#00796b;
+      --brand-green:#1f9d73;
+      --sky:#16a4d8;
+      --warn:#d32f2f;
+      --link:#0b5bd3;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#fff;color:#1e1e1e}
+
+    /* ======= TOP RIBBON ======= */
+    .top-ribbon{
+      font-size:12px; line-height:1.2; color:#333; background:#f6f6f6; border-bottom:1px solid #e7e7e7;
+    }
+    .top-ribbon .wrap{
+      max-width:1200px; margin:0 auto; padding:6px 12px; display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+    }
+    .top-links{display:flex; gap:10px; flex-wrap:wrap}
+    .top-links a{color:#0b5bd3; text-decoration:none}
+    .top-links a:hover{text-decoration:underline}
+    .top-right{display:flex; align-items:center; gap:10px}
+    .follow{color:#000; font-weight:600}
+    .social a{display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; text-decoration:none}
+    .social svg{width:18px; height:18px; fill:#333}
+
+    /* ======= BRAND ROW ======= */
+    .brand-row{background:#fff; border-bottom:1px solid #e7e7e7}
+    .brand-row .wrap{
+      max-width:1200px; margin:0 auto; padding:10px 12px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    }
+    .brand-left,.brand-center,.brand-right{display:flex; align-items:center; gap:10px}
+    .brand-left img,.brand-right img{height:54px; width:auto; object-fit:contain}
+    .saathi-title{
+      font-weight:900; color:#0e6f8f; font-size:28px; letter-spacing:.5px
+    }
+    .saathi-sub{font-size:12px; color:#555; margin-top:-6px}
+    .gov-left{display:flex; align-items:center; gap:8px; color:#444; font-size:12px}
+    .gov-left img{height:34px}
+
+    /* ======= LINK BAR ======= */
+    .link-bar{background:#ffffff; border-bottom:1px solid #e7e7e7}
+    .link-bar .wrap{
+      max-width:1200px; margin:0 auto; padding:8px 12px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+    }
+    .menu a{color:#0b5bd3; text-decoration:none; padding:6px 8px; border-radius:4px}
+    .menu a:hover{background:#eef4ff}
+    .spacer{flex:1}
+    .btn{border:1px solid #0b5bd3; color:#0b5bd3; background:#fff; padding:6px 10px; border-radius:4px; font-weight:700; cursor:pointer}
+    .btn.teal{border-color:var(--teal); color:#fff; background:var(--teal)}
+    .btn.gray{border-color:#444; color:#fff; background:#444}
+    .btn:hover{opacity:.9}
+
+    /* ======= OPTIONAL SUB-NAV (kept) ======= */
+    .navbar{background:var(--teal); padding:10px; text-align:center}
+    .navbar a{color:#fff; margin:0 10px; text-decoration:none; font-weight:bold}
+
+    /* ======= FORM SECTION ======= */
+    .form-section{max-width:1000px; margin:20px auto; padding:20px; border:1px solid #ddd; background:#fff}
+    .form-section h2{background:var(--teal); color:#fff; padding:10px; margin:0 0 20px}
+
+    /* premise cards */
+    .premise-options{display:flex; justify-content:space-around; margin-bottom:20px; gap:10px; flex-wrap:wrap}
+    .premise-card{flex:1; min-width:220px; text-align:center; color:#fff; padding:28px 10px; font-weight:bold; cursor:pointer; border-radius:6px; border:3px solid transparent; transition:.2s; box-shadow:0 6px 10px rgba(0,0,0,.08)}
+    .premise-card.orange{background:#f0a41a}
+    .premise-card.red{background:#cf4437}
+    .premise-card.green{background:#1f9d73}
+    .premise-card.blue{background:#13a4d9}
+    .premise-card.selected{border:3px solid #000}
+
+    /* state select */
+    .state-select{margin:20px 0; padding:10px; background:#ffe6cc; border:1px solid #ff9933}
+    .state-select label{font-weight:bold}
+    .state-select select{padding:5px; margin-left:10px}
+    .note{font-size:13px; color:#b22222; margin-top:10px}
+
+    /* accordions + KOB list */
+    .accordion{background:#eee; cursor:pointer; padding:15px; margin:5px 0; border:none; outline:none; width:100%; text-align:left; font-weight:bold; transition:background .2s}
+    .accordion.active,.accordion:hover{background:#ccc}
+    .panel{max-height:0; overflow:hidden; transition:max-height .3s ease-out; background:#f9f9f9; padding-left:15px}
+    .kob-option{display:flex; justify-content:space-between; align-items:center; margin:6px 0; padding:10px; background:#e6f7ff; border-radius:6px}
+    .kob-option button{background:var(--teal); color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer}
+    .kob-option button:hover{background:#006666}
+    #selected-kob-list{margin-top:15px; padding:10px; border:1px solid #ccc; background:#f9f9f9}
+    #selected-kob-list ul{list-style:none; padding:0; margin:6px 0 0}
+    #selected-kob-list li{margin:4px 0; padding:6px 8px; background:#d9f2d9; border-radius:4px; display:flex; justify-content:space-between; align-items:center; gap:10px}
+    #selected-kob-list li .tag{font-weight:bold}
+    #selected-kob-list li button{background:#c62828; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer}
+    .buttons{margin:20px 0; text-align:center}
+    .buttons button{padding:10px 20px; margin:0 5px; border:none; border-radius:5px; cursor:pointer; font-weight:bold}
+    .buttons .clear{background:#444; color:#fff}
+    .buttons .proceed{background:var(--teal); color:#fff}
+    .buttons .cancel{background:#c62828; color:#fff}
+
+    /* ======= Modal ======= */
+    .modal-backdrop{position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; align-items:center; justify-content:center; padding:20px; z-index:999}
+    .modal{max-width:900px; width:100%; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.3)}
+    .modal-header{background:var(--teal); color:#fff; padding:14px 18px; font-weight:bold; display:flex; justify-content:space-between; align-items:center}
+    .modal-body{padding:18px}
+    .modal-actions{display:flex; justify-content:flex-end; gap:10px; padding:14px 18px; border-top:1px solid #eee}
+    .modal-actions button{padding:8px 14px; border:none; border-radius:6px; cursor:pointer; font-weight:bold}
+    .btn-cancel{background:#eee}
+    .btn-select{background:var(--teal); color:#fff}
+    .sub-box{background:linear-gradient(90deg,#6ad3a8 0,#57c39a 40%,#4dbd95 100%); padding:20px; border-radius:8px; color:#fff}
+    .sub-explainer{font-size:18px; line-height:1.5; margin-bottom:14px}
+    .radio-row{display:flex; align-items:flex-start; gap:10px; margin:10px 0; background:rgba(255,255,255,.15); padding:10px; border-radius:6px}
+    .radio-row input{margin-top:4px}
+    .pill{display:inline-block; background:#004f44; color:#fff; padding:4px 8px; border-radius:999px; font-size:12px; margin-left:6px}
+    @media (max-width:700px){
+      .radio-row{flex-direction:column}
+      .premise-card{min-width:160px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======= TOP RIBBON ======= -->
+  <div class="top-ribbon">
+    <div class="wrap">
+      <div class="top-links">
+        <a href="#">Latest Announcements</a> |
+        <a href="#">FAQ</a> |
+        <a href="#">Become a Partner</a> |
+        <a href="mailto:helpdesk@saathi.gov.in">helpdesk@saathi.gov.in</a> |
+        <span>Call: 1800-11-2100</span>
+      </div>
+      <div class="top-right">
+        <span class="follow">Follow Us</span>
+        <div class="social">
+          <a href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M22 12.07C22 6.48 17.52 2 11.93 2S2 6.48 2 12.07c0 4.99 3.66 9.13 8.44 9.93v-7.02H7.9v-2.91h2.54V9.41c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.19 2.24.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.91h-2.34V22c4.78-.8 8.44-4.94 8.44-9.93z"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 .001 10.001A5 5 0 0 0 12 7zm6.5-.9a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
+          </a>
+          <a href="#" aria-label="X">
+            <svg viewBox="0 0 24 24"><path d="M3 3h3.7l5.1 6.9L17.8 3H21l-7.2 9.1L21 21h-3.7l-5.4-7.2L6.2 21H3l7.5-9.5L3 3z"/></svg>
+          </a>
+          <a href="#" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8.98h5v15H0v-15zM8.5 8.98h4.8v2.05h.07c.67-1.27 2.32-2.6 4.78-2.6 5.12 0 6.06 3.37 6.06 7.76v7.79h-5v-6.9c0-1.65-.03-3.77-2.3-3.77-2.31 0-2.67 1.8-2.67 3.65v7.02h-5v-15z"/></svg>
+          </a>
+          <a href="#" aria-label="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.2 3.5 12 3.5 12 3.5s-7.2 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.4 0 12 0 12s0 3.6.5 5.8a3 3 0 0 0 2.1 2.1c2.2.6 9.4.6 9.4.6s7.2 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.6 24 12 24 12s0-3.6-.5-5.8zM9.6 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
+          </a>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <a href="#" style="font-size:12px; text-decoration:none; color:#333;">A+ | A | A-</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= BRAND ROW (SAATHI branding) ======= -->
+  <div class="brand-row">
+    <div class="wrap">
+      <div class="brand-left">
+        <img src="assets/india-emblem.png" alt="Government of India">
+        <div class="gov-left">
+          <span>Government of India</span>
+        </div>
+      </div>
+
+      <div class="brand-center" style="flex-direction:column; align-items:center; text-align:center">
+        <div class="saathi-title">SAATHI</div>
+        <div class="saathi-sub">Single Access Approval Touchless Hub Interface</div>
+      </div>
+
+      <div class="brand-right">
+        <img src="assets/eat-right-india.png" alt="Initiative">
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= LINK BAR ======= -->
+  <div class="link-bar">
+    <div class="wrap">
+      <div class="menu">
+        <a href="#">Home</a>
+        <a href="#">About SAATHI</a>
+        <a href="#">Track Application</a>
+        <a href="#">New License / Registration</a>
+        <a href="#">Renew</a>
+        <a href="#">Modify</a>
+        <a href="#">Annual Return</a>
+        <a href="#">Grievance</a>
+        <a href="#">Help</a>
+        <a href="#">User Manual</a>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn">Login Businesses</button>
+      <button class="btn gray">Login-Authorities</button>
+      <button class="btn teal">Login-Trace</button>
+    </div>
+  </div>
+
+  <!-- Optional sub-nav -->
+  <div class="navbar">
+    <a href="#">Home</a>
+    <a href="#">New Registration</a>
+    <a href="#">Renew</a>
+    <a href="#">Modify</a>
+    <a href="#">Annual Return</a>
+    <a href="#">FAQs</a>
+  </div>
+
+  <!-- ======= MAIN FORM SECTION ======= -->
+  <div class="form-section">
+    <h2>Apply for New License/Registration</h2>
+
+    <p><b>Where is the premise of operation?</b></p>
+    <div class="premise-options">
+      <div class="premise-card orange" onclick="selectPremise(this)">Tatkal License / Registration</div>
+      <div class="premise-card red" onclick="selectPremise(this)">General</div>
+      <div class="premise-card green" onclick="selectPremise(this)">Railway Station</div>
+      <div class="premise-card blue" onclick="selectPremise(this)">Airport/Seaport</div>
+    </div>
+
+    <div class="state-select">
+      <label for="state">Select the state where premise is located:</label>
+      <select id="state" name="state">
+        <option value="">-- Select State / UT --</option>
+        <option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option>
+        <option>Bihar</option><option>Chhattisgarh</option><option>Goa</option><option>Gujarat</option>
+        <option>Haryana</option><option>Himachal Pradesh</option><option>Jharkhand</option>
+        <option>Karnataka</option><option>Kerala</option><option>Madhya Pradesh</option><option>Maharashtra</option>
+        <option>Manipur</option><option>Meghalaya</option><option>Mizoram</option><option>Nagaland</option>
+        <option>Odisha</option><option>Punjab</option><option>Rajasthan</option><option>Sikkim</option>
+        <option>Tamil Nadu</option><option>Telangana</option><option>Tripura</option><option>Uttar Pradesh</option>
+        <option>Uttarakhand</option><option>West Bengal</option><option>Andaman & Nicobar Islands</option>
+        <option>Chandigarh</option><option>Dadra & Nagar Haveli and Daman & Diu</option><option>Delhi</option>
+        <option>Jammu & Kashmir</option><option>Ladakh</option><option>Lakshadweep</option><option>Puducherry</option>
+      </select>
+      <div class="note">
+        Note: Each location will be issued separate license…
+        A Food Business Operator (FBO)'s premise shall have only one SAATHI License or Registration.
+      </div>
+    </div>
+
+    <h3>Select Kind of Business (Multiple Selection can be made)</h3>
+
+    <!-- Manufacturer -->
+    <button class="accordion">Manufacturer</button>
+    <div class="panel">
+      <div class="kob-option"><span>Dairy units [Handling and processing milk/ milk products including Milk Producers and Milk Vendors]</span><button onclick="openSubOptions('Dairy units')">Add</button></div>
+      <div class="kob-option"><span>Vegetable oil and processing units</span><button onclick="openSubOptions('Vegetable oil and processing units')">Add</button></div>
+      <div class="kob-option"><span>Slaughtering units</span><button onclick="openSubOptions('Slaughtering units')">Add</button></div>
+      <div class="kob-option"><span>Meat processing units</span><button onclick="openSubOptions('Meat processing units')">Add</button></div>
+      <div class="kob-option"><span>Fish and Fish Products</span><button onclick="openSubOptions('Fish and Fish Products')">Add</button></div>
+      <div class="kob-option"><span>Food or Health Supplements and Nutraceuticals etc.</span><button onclick="openSubOptions('Food or Health Supplements and Nutraceuticals etc.')">Add</button></div>
+      <div class="kob-option"><span>General Manufacturing</span><button onclick="openSubOptions('General Manufacturing')">Add</button></div>
+      <div class="kob-option"><span>Proprietary Food</span><button onclick="openSubOptions('Proprietary Food')">Add</button></div>
+      <div class="kob-option"><span>Non-specified food and food ingredients</span><button onclick="openSubOptions('Non-specified food and food ingredients')">Add</button></div>
+      <div class="kob-option"><span>Substances Added to Food</span><button onclick="openSubOptions('Substances Added to Food')">Add</button></div>
+      <div class="kob-option"><span>Radiation Processing of Food</span><button onclick="openSubOptions('Radiation Processing of Food')">Add</button></div>
+      <div class="kob-option"><span>100 % Export Oriented units</span><button onclick="openSubOptions('100 % Export Oriented units')">Add</button></div>
+    </div>
+
+    <!-- Trade / Retail -->
+    <button class="accordion">Trade / Retail</button>
+    <div class="panel">
+      <div class="kob-option"><span>Storage (Except Controlled Atmosphere and Cold)</span><button onclick="openSubOptions('Storage (Except Controlled Atmosphere and Cold)')">Add</button></div>
+      <div class="kob-option"><span>Storage (Cold / Refrigerated)</span><button onclick="openSubOptions('Storage (Cold / Refrigerated)')">Add</button></div>
+      <div class="kob-option"><span>Storage (Controlled Atmosphere + Cold)</span><button onclick="openSubOptions('Storage (Controlled Atmosphere + Cold)')">Add</button></div>
+      <div class="kob-option"><span>Wholesaler</span><button onclick="openSubOptions('Wholesaler')">Add</button></div>
+      <div class="kob-option"><span>Distributor</span><button onclick="openSubOptions('Distributor')">Add</button></div>
+      <div class="kob-option"><span>Transportation (Insulated refrigerated van/ wagon, milk tankers etc.)</span><button onclick="openSubOptions('Transportation')">Add</button></div>
+      <div class="kob-option"><span>Retailer</span><button onclick="openSubOptions('Retailer')">Add</button></div>
+      <div class="kob-option"><span>Direct Seller</span><button onclick="openSubOptions('Direct Seller')">Add</button></div>
+      <div class="kob-option"><span>Food Vending Agencies [Sale of food from vending machines.]</span><button onclick="openSubOptions('Food Vending Agencies')">Add</button></div>
+      <div class="kob-option"><span>Importer</span><button onclick="openSubOptions('Importer')">Add</button></div>
+      <div class="kob-option"><span>e-Commerce</span><button onclick="openSubOptions('e-Commerce')">Add</button></div>
+    </div>
+
+    <!-- Food Services -->
+    <button class="accordion">Food Services</button>
+    <div class="panel">
+      <div class="kob-option"><span>Petty Retailer of snacks/tea shops</span><button onclick="openSubOptions('Petty Retailer of snacks/tea shops')">Add</button></div>
+      <div class="kob-option"><span>Hawker (Itinerant / Mobile food vendor)</span><button onclick="openSubOptions('Hawker')">Add</button></div>
+      <div class="kob-option"><span>Restaurants</span><button onclick="openSubOptions('Restaurants')">Add</button></div>
+      <div class="kob-option"><span>Food Vending Establishment [Freshly prepared food with temporary/no seating]</span><button onclick="openSubOptions('Food Vending Establishment')">Add</button></div>
+      <div class="kob-option"><span>Club/Canteen</span><button onclick="openSubOptions('Club/Canteen')">Add</button></div>
+      <div class="kob-option"><span>Caterer</span><button onclick="openSubOptions('Caterer')">Add</button></div>
+      <div class="kob-option"><span>Hotel</span><button onclick="openSubOptions('Hotel')">Add</button></div>
+      <div class="kob-option"><span>Mid-Day meal - Caterer</span><button onclick="openSubOptions('Mid-Day meal - Caterer')">Add</button></div>
+      <div class="kob-option"><span>Mid-Day meal - Canteen</span><button onclick="openSubOptions('Mid-Day meal - Canteen')">Add</button></div>
+      <div class="kob-option"><span>Anganwadi [ICDS] Centres</span><button onclick="openSubOptions('Anganwadi [ICDS] Centres')">Add</button></div>
+    </div>
+
+    <!-- Central Govt. Agencies -->
+    <button class="accordion">Central Govt. Agencies</button>
+    <div class="panel">
+      <div class="kob-option"><span>Food Catering Services in establishments and units under Central Government Agencies</span><button onclick="openSubOptions('Food Catering Services - Central Govt')">Add</button></div>
+      <div class="kob-option"><span>Storage (Except Controlled Atmosphere and Cold)</span><button onclick="openSubOptions('Central Storage (Except Controlled Atmosphere and Cold)')">Add</button></div>
+      <div class="kob-option"><span>Storage (Cold / Refrigerated)</span><button onclick="openSubOptions('Central Storage (Cold / Refrigerated)')">Add</button></div>
+      <div class="kob-option"><span>Storage (Controlled Atmosphere + Cold)</span><button onclick="openSubOptions('Central Storage (Controlled Atmosphere + Cold)')">Add</button></div>
+      <div class="kob-option"><span>Wholesaler</span><button onclick="openSubOptions('Central Wholesaler')">Add</button></div>
+      <div class="kob-option"><span>Distributor</span><button onclick="openSubOptions('Central Distributor')">Add</button></div>
+      <div class="kob-option"><span>Retailer</span><button onclick="openSubOptions('Central Retailer')">Add</button></div>
+    </div>
+
+    <div id="selected-kob-list">
+      <b>Selected Kind of Business:</b>
+      <ul id="kob-list"></ul>
+    </div>
+
+    <div class="buttons">
+      <button class="clear" onclick="clearKOB()">Clear All Selected KOB</button>
+      <button class="proceed" onclick="goNext()">Proceed</button>
+      <button class="cancel">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ======= MODAL ======= -->
+  <div id="modal-backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal">
+      <div class="modal-header">
+        <span id="modal-title">Choose Sub-Option</span>
+        <button class="btn-cancel" onclick="closeModal()" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-select" onclick="confirmSubOption()">Select</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Premise selection
+    function selectPremise(el){document.querySelectorAll('.premise-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected')}
+
+    // Accordions
+    document.querySelectorAll(".accordion").forEach(acc=>{
+      acc.addEventListener("click",function(){
+        this.classList.toggle("active");
+        const panel=this.nextElementSibling;
+        panel.style.maxHeight?panel.style.maxHeight=null:panel.style.maxHeight=panel.scrollHeight+"px";
+      });
+    });
+
+    // Descriptions shown in modal green box
+    const DESCRIPTIONS = {
+      "Dairy units":
+        "Dairy processing means handling, processing, manufacturing, packing, storing, distribution & transportation of milk and milk products.",
+      "Vegetable oil and processing units":
+        "Vegetable oil processing means processing of vegetables to produce vegetable oils by the process of solvent extraction/expeller and refining including oil expeller units.",
+      "Slaughtering units":
+        "Slaughtering means a process of transporting, stunning, butchering, dressing, processing, storing & distribution of live animals/poultry birds.",
+      "100 % Export Oriented units":
+        "Manufacturers/Processors involved in manufacturing/processing of Food Products meant for export purpose only [not meeting product standards] and having 100% EOU certificate from Ministry of Commerce.",
+      "Storage (Except Controlled Atmosphere and Cold)":
+        "Storage is an activity where food products in packed or unpacked condition are stored for further distribution in warehouses, godowns etc.",
+      "Hotel":
+        "Hotel: commercial establishment for lodging and meals; minimum 6 letting bedrooms with at least 3 ensuite bathrooms.",
+      "Restaurants":
+        "Restaurant prepares and serves food/drinks; may offer dine-in, takeaway, or delivery."
+    };
+
+    // Sub-options (exact items you provided + working templates)
+    const SUBOPTIONS = {
+      "Dairy units": [
+        "More than 50,000 litres of liquid milk/day or more than 2500 MT of milk solid per annum [Central License]",
+        "501 to 50,000 LPD of milk or 2.5 MT to 2500 MT of milk solids per annum [State License]",
+        "Upto 500 LPD of milk or upto 2.5 MT of milk solids per annum [Registration]"
+      ],
+      "Vegetable oil and processing units": [
+        "More than 2 MT per day [Central License]",
+        "Upto 2 MT per day and turnover above 12 lakh [State License]",
+        "Turnover up to 12 lakhs/annum [Registration]"
+      ],
+      "Slaughtering units": ["Large Animal","Small Animal","Poultry Birds"],
+      "100 % Export Oriented units": ["100 % Export Oriented Units [Central License]"],
+      "Storage (Except Controlled Atmosphere and Cold)": [
+        "Capacity more than 50,000 MT [Central License]",
+        "Capacity upto 50,000 MT [State License]",
+        "Turnover up to 12 lakhs/annum [Registration]"
+      ],
+      "Hotel": [
+        "Five Star and Above (Ministry of Tourism Certificate required) [Central License]",
+        "Three Star or Four Star (Ministry of Tourism Certificate required) [State License]",
+        "One Star, Two Star or non-Star Rating having turnover more than Rs. 12 Lacs per annum [State License]",
+        "Turnover upto Rs. 12 Lacs per annum [Registration]"
+      ],
+      "Restaurants": [
+        "Turnover greater than 20 crores/annum [Central License]",
+        "Turnover upto 20 crores/annum [State License]",
+        "Turnover up to 12 lakhs/annum [Registration]"
+      ],
+
+      /* remaining templates – adjust as needed */
+      "Meat processing units": ["Large — Central License","Medium — State License","Small — Registration"],
+      "Fish and Fish Products": ["Large — Central License","Medium — State License","Small — Registration"],
+      "Food or Health Supplements and Nutraceuticals etc.": ["Large — Central License","Medium — State License","Small — Registration"],
+      "General Manufacturing": ["Large — Central License","Medium — State License","Small — Registration"],
+      "Proprietary Food": ["Large — Central License","Medium — State License","Small — Registration"],
+      "Non-specified food and food ingredients": ["Large — Central License","Medium — State License","Small — Registration"],
+      "Substances Added to Food": ["Large — Central License","Medium — State License","Small — Registration"],
+      "Radiation Processing of Food": ["Large — Central License","Medium — State License","Small — Registration"],
+
+      "Storage (Cold / Refrigerated)": ["Large — Central License","Medium — State License","Small — Registration"],
+      "Storage (Controlled Atmosphere + Cold)": ["Large — Central License","Medium — State License","Small — Registration"],
+      "Wholesaler": ["Large — Central License","Medium — State License","Small — Registration"],
+      "Distributor": ["Large — Central License","Medium — State License","Small — Registration"],
+      "Transportation": ["Large — Central License","Medium — State License","Small — Registration"],
+      "Retailer": ["Large — Central License","Medium — State License","Small — Registration"],
+      "Direct Seller": ["Large — Central License","Medium — State License","Small — Registration"],
+      "Food Vending Agencies": ["Large — Central License","Medium — State License","Small — Registration"],
+      "Importer": ["Central License"], "e-Commerce": ["Central License"],
+      "Petty Retailer of snacks/tea shops": ["Registration"], "Hawker": ["Registration"],
+      "Food Vending Establishment": ["Registration"], "Club/Canteen": ["State License","Registration"],
+      "Caterer": ["State License","Registration"], "Mid-Day meal - Caterer": ["State License","Registration"],
+      "Mid-Day meal - Canteen": ["State License","Registration"], "Anganwadi [ICDS] Centres": ["Registration"],
+      "Food Catering Services - Central Govt": ["Central License"],
+      "Central Storage (Except Controlled Atmosphere and Cold)": ["Central License"],
+      "Central Storage (Cold / Refrigerated)": ["Central License"],
+      "Central Storage (Controlled Atmosphere + Cold)": ["Central License"],
+      "Central Wholesaler": ["Central License"], "Central Distributor": ["Central License"],
+      "Central Retailer": ["Central License"]
+    };
+
+    // Modal handling
+    let currentMainOption = null;
+    function openSubOptions(main){
+      currentMainOption = main;
+      const backdrop = document.getElementById('modal-backdrop');
+      const title = document.getElementById('modal-title');
+      const body = document.getElementById('modal-body');
+      title.textContent = main;
+
+      const items = SUBOPTIONS[main] || ["Central License","State License","Registration"];
+      const desc = DESCRIPTIONS[main];
+      const content = `
+        <div class="sub-box">
+          ${desc ? `<div class="sub-explainer">${escapeHtml(desc)}</div>` : ""}
+          ${items.map((t,i)=>`
+            <label class="radio-row">
+              <input type="radio" name="subchoice" value="${escapeHtml(t)}" ${i===0?'checked':''}>
+              <div>${escapeHtml(t)}</div>
+            </label>
+          `).join('')}
+        </div>`;
+      body.innerHTML = content;
+
+      backdrop.style.display = 'flex';
+      backdrop.setAttribute('aria-hidden','false');
+    }
+    function closeModal(){
+      const b = document.getElementById('modal-backdrop');
+      b.style.display='none'; b.setAttribute('aria-hidden','true'); currentMainOption=null;
+    }
+    function confirmSubOption(){
+      const picked = document.querySelector('input[name="subchoice"]:checked');
+      if(!picked) return; addKOB(currentMainOption, picked.value); closeModal();
+    }
+
+    // Selected list mgmt
+    function addKOB(main, sublabel){
+      const list = document.getElementById("kob-list");
+      const key = main + " — " + (sublabel || "");
+      if ([...list.children].some(li => li.dataset.key === key)) return;
+      const li = document.createElement("li");
+      li.dataset.key = key;
+      li.innerHTML = `
+        <span class="tag">${escapeHtml(main)}</span>
+        <span>— ${escapeHtml(sublabel || '')}</span>
+        <button onclick="removeKOB(this)">Remove</button>`;
+      list.appendChild(li);
+    }
+    function removeKOB(btn){ btn.parentElement.remove(); }
+    function clearKOB(){ document.getElementById("kob-list").innerHTML=""; }
+    function escapeHtml(str){ return (str||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+    // ✅ Proceed → store selected KOBs, then go to s.html
+    function goNext(){
+      const items = [...document.querySelectorAll('#kob-list li')].map(
+        li => li.dataset.key || li.textContent.trim()
+      );
+      localStorage.setItem('selectedKOBs', JSON.stringify(items));
+      window.location.href = 's.html';
+    }
+
+    // Close modal via backdrop / ESC
+    document.getElementById('modal-backdrop').addEventListener('click', e=>{ if(e.target.id==='modal-backdrop') closeModal(); });
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+  </script>
+</body>
+</html>
