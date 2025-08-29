@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SAATHI – Payment</title>
+<style>
+  :root{--blue:#1a8cff;--blueDark:#0f75d4;--bg:#f3f6fb;--card:#fff;--muted:#6a778b;--ok:#15a362}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter, Arial, Helvetica, sans-serif;background:var(--bg);color:#111}
+
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 16px}
+  .header{background:#2d89ef;color:#fff;padding:18px 16px}
+  .header .wrap{display:flex;align-items:center;gap:16px}
+  .back{font-size:22px;cursor:pointer}
+  .title{font-size:24px;font-weight:800}
+
+  /* Payment container */
+  .pay-grid{display:grid;grid-template-columns:360px 1fr;gap:18px;margin-top:18px}
+  .card{background:var(--card);border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+  .left .head{padding:16px 18px;border-bottom:1px solid #eef1f6;font-weight:700}
+  .method{display:flex;align-items:center;gap:12px;padding:14px 18px;border-top:1px solid #eef1f6;cursor:pointer}
+  .method:first-child{border-top:none}
+  .method.active,.method:hover{background:#f2f7ff}
+  .method .icon{width:28px;height:28px;border-radius:6px;background:#e9f1ff;display:flex;align-items:center;justify-content:center;font-weight:800;color:#2a69ff}
+  .right .head{padding:16px 18px;border-bottom:1px solid #eef1f6}
+  .right .head h3{margin:0 0 6px}
+  .muted{color:var(--muted);font-size:13px}
+  .amt{font-size:22px;font-weight:800}
+  .pad{padding:18px}
+  .row{display:grid;grid-template-columns:1fr 160px 120px;gap:12px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .row>div,.row2>div{display:flex;flex-direction:column}
+  label{font-size:12px;font-weight:700;color:#334}
+  input,select{padding:10px;border:1px solid #d6dbe5;border-radius:8px;background:#fff}
+  input:focus,select:focus{outline:none;border-color:#9cc3ff;box-shadow:0 0 0 3px rgba(26,140,255,.15)}
+  .btn{padding:12px 16px;border:none;border-radius:8px;font-weight:800;cursor:pointer}
+  .btn.primary{background:var(--blue);color:#fff}
+  .btn.primary:hover{background:var(--blueDark)}
+  .btn.link{background:transparent;color:#2a69ff}
+  .paybar{padding:18px;border-top:1px solid #eef1f6;display:flex;justify-content:space-between;align-items:center}
+  .paybar .righty{display:flex;gap:12px;align-items:center}
+  .tiny{font-size:12px}
+  .rpw{display:flex;align-items:center;gap:6px;color:#9aa5b5}
+
+  /* Modal */
+  .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:99}
+  .modal{width:min(520px,92vw);background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+  .modal .head{background:#2d89ef;color:#fff;padding:14px 16px;font-weight:800}
+  .modal .body{padding:18px}
+  .ok{font-size:18px;display:flex;align-items:center;gap:10px}
+  .ok .tick{width:38px;height:38px;border-radius:50%;background:#eaf8f0;color:var(--ok);display:flex;align-items:center;justify-content:center;font-weight:900}
+  .modal .foot{padding:14px 16px;border-top:1px solid #eef1f6;display:flex;justify-content:flex-end;gap:10px}
+
+  /* Print sheet */
+  @media print{
+    body{background:#fff}
+    .noprint{display:none !important}
+    .sheet{box-shadow:none;border:none}
+  }
+  .sheet{max-width:900px;margin:0 auto;background:#fff;border:1px solid #e6e9ef;border-radius:8px}
+  .sheet .shead{background:#f7fbff;border-bottom:1px solid #e6e9ef;padding:12px 16px;font-weight:800}
+  .sheet .sbody{padding:14px 16px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .badge{display:inline-block;background:#eef8ff;border:1px solid #cfe6ff;color:#2a69ff;border-radius:999px;padding:4px 10px;margin:4px 6px 0 0;font-size:12px}
+  .hr{height:1px;background:#eee;margin:14px 0}
+  .kv{display:grid;grid-template-columns:220px 1fr;gap:8px}
+
+  /* Floating Home button */
+  .homefab{position:fixed;right:16px;bottom:16px;width:54px;height:54px;border-radius:50%;
+           background:#2d89ef;color:#fff;display:flex;align-items:center;justify-content:center;
+           font-size:26px;box-shadow:0 10px 24px rgba(0,0,0,.22);text-decoration:none;z-index:98}
+  .homefab:hover{background:#0f75d4}
+</style>
+</head>
+<body>
+
+<!-- Blue header like screenshot -->
+<div class="header noprint">
+  <div class="wrap">
+    <div class="back" onclick="history.back()">❮</div>
+    <div class="title" id="payerName">SAATHI – Application Payment</div>
+  </div>
+</div>
+
+<div class="wrap noprint">
+  <div class="pay-grid">
+    <!-- left: methods -->
+    <div class="left card">
+      <div class="head">Select a payment method</div>
+      <div class="method active" data-method="card" onclick="pickMethod(this)">
+        <div class="icon">💳</div>
+        <div>
+          <div><b>Credit/Debit Card</b></div>
+          <div class="muted tiny">Visa, Mastercard, Maestro, Rupay</div>
+        </div>
+      </div>
+      <div class="method" data-method="net" onclick="pickMethod(this)">
+        <div class="icon">🏦</div>
+        <div>
+          <div><b>Netbanking</b></div>
+          <div class="muted tiny">Pay with Internet Banking Account</div>
+        </div>
+      </div>
+      <div class="method" data-method="upi" onclick="pickMethod(this)">
+        <div class="icon">🟦</div>
+        <div>
+          <div><b>UPI</b></div>
+          <div class="muted tiny">Pay using BHIM, GPay and other UPI apps</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- right: form -->
+    <div class="right card">
+      <div class="head">
+        <h3 style="margin:0">Amount payable is</h3>
+        <div class="amt">₹<span id="amount">500</span> <span class="muted">+ Convenience Charges</span></div>
+      </div>
+
+      <!-- CARD -->
+      <div id="cardForm" class="pad">
+        <div class="row">
+          <div>
+            <label>Card Number</label>
+            <input id="cardNumber" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" oninput="formatCard(this)">
+          </div>
+          <div>
+            <label>Expiry Date</label>
+            <input id="cardExpiry" maxlength="7" placeholder="MM / YY" oninput="formatExpiry(this)">
+          </div>
+          <div>
+            <label>CVV</label>
+            <input id="cardCVV" maxlength="4" placeholder="***">
+          </div>
+        </div>
+        <div class="row2" style="margin-top:10px">
+          <div>
+            <label>Cardholder's Name</label>
+            <input id="cardName" placeholder="As on card">
+          </div>
+          <div></div>
+        </div>
+      </div>
+
+      <!-- NETBANKING -->
+      <div id="netForm" class="pad" style="display:none">
+        <div class="row2">
+          <div>
+            <label>Select Bank</label>
+            <select id="bank">
+              <option value="">-- Choose Bank --</option>
+              <option>State Bank of India</option><option>HDFC Bank</option>
+              <option>ICICI Bank</option><option>Axis Bank</option>
+              <option>Punjab National Bank</option><option>Bank of Baroda</option>
+            </select>
+          </div>
+          <div></div>
+        </div>
+      </div>
+
+      <!-- UPI -->
+      <div id="upiForm" class="pad" style="display:none">
+        <div class="row2">
+          <div>
+            <label>UPI ID</label>
+            <input id="upiId" placeholder="name@bank">
+          </div>
+          <div class="muted" style="display:flex;align-items:end">We’ll send a collect request</div>
+        </div>
+      </div>
+
+      <div class="paybar">
+        <div class="rpw tiny">Powered by <b>Razorpay (simulated)</b></div>
+        <div class="righty">
+          <button class="btn link" onclick="cancelPayment()">Cancel Payment</button>
+          <button class="btn primary" onclick="payNow()">PAY NOW</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Payment success + print -->
+<div class="backdrop" id="okBack">
+  <div class="modal">
+    <div class="head">Payment</div>
+    <div class="body">
+      <div class="ok">
+        <div class="tick">✔</div>
+        <div><b>Payment Successful!</b><br><span class="muted">Txn ID: <span id="txnId">RPY-XXXXXX</span></span></div>
+      </div>
+      <div style="margin-top:12px">
+        <span class="muted">You can print the registration summary now.</span>
+      </div>
+    </div>
+    <div class="foot">
+      <button class="btn" onclick="closeOk()">Close</button>
+      <button class="btn primary" onclick="printSummary()">Print Registration Summary</button>
+    </div>
+  </div>
+</div>
+
+<!-- Printable sheet (hidden until printSummary) -->
+<div id="printArea" class="sheet" style="display:none">
+  <div class="shead">SAATHI – Registration Summary</div>
+  <div class="sbody">
+    <div class="grid2">
+      <div class="kv">
+        <div>Applicant / Company</div><div id="p_applicant">—</div>
+        <div>Login ID</div><div id="p_login">—</div>
+        <div>Primary Email</div><div id="p_email">—</div>
+        <div>Primary Mobile</div><div id="p_mobile">—</div>
+        <div>Belongs To</div><div id="p_belongs">—</div>
+        <div>Amount Paid</div><div>₹<span id="p_amount">500</span></div>
+        <div>Transaction ID</div><div id="p_txn">—</div>
+      </div>
+      <div class="kv">
+        <div>Photo</div><div id="p_photo">—</div>
+        <div>Identity Proof</div><div id="p_id">—</div>
+        <div>Other Documents</div><div id="p_other">—</div>
+        <div>Payment Method</div><div id="p_method">—</div>
+        <div>Date</div><div id="p_date">—</div>
+      </div>
+    </div>
+    <div class="hr"></div>
+    <div><b>Selected Kind of Business</b></div>
+    <div id="p_kob" style="margin-top:6px"></div>
+  </div>
+</div>
+
+<!-- Floating Home button -->
+<a class="homefab noprint" href="index.html" title="Go to Home">🏠</a>
+
+<script>
+  /* ===== Load any data saved earlier =====
+     To enrich the printout, from i.html you can save:
+     localStorage.setItem('signupData', JSON.stringify({
+       applicant: document.getElementById('appName')?.value || '',
+       loginId: document.getElementById('loginId').value,
+       pEmail: document.getElementById('pEmail').value,
+       pMobile: document.getElementById('pMobile').value,
+       pBelongs: document.getElementById('pBelongs').value
+     }));
+     localStorage.setItem('uploadData', JSON.stringify({
+       photo: {ok:true,name:'photo.jpg'},
+       id: {ok:true,type: 'Aadhar Card', name:'Aadhaar_87XXXX47.pdf'},
+       other: [{desc:'Address Proof',name:'rent.pdf'}]
+     }));
+  */
+  const selectedKOBs = (()=>{try{return JSON.parse(localStorage.getItem('selectedKOBs')||'[]')}catch(e){return []}})();
+  const signupData = (()=>{try{return JSON.parse(localStorage.getItem('signupData')||'{}')}catch(e){return {}}})();
+  const uploadData = (()=>{try{return JSON.parse(localStorage.getItem('uploadData')||'{}')}catch(e){return {}}})();
+  const amount = 500;
+  document.getElementById('amount').textContent = amount;
+  if(signupData.applicant){ document.getElementById('payerName').textContent = signupData.applicant; }
+
+  /* ===== Method switching ===== */
+  function pickMethod(el){
+    document.querySelectorAll('.method').forEach(m=>m.classList.remove('active'));
+    el.classList.add('active');
+    const m = el.dataset.method;
+    document.getElementById('cardForm').style.display = (m==='card')?'block':'none';
+    document.getElementById('netForm').style.display  = (m==='net')?'block':'none';
+    document.getElementById('upiForm').style.display  = (m==='upi')?'block':'none';
+  }
+
+  /* ===== Formatters ===== */
+  function formatCard(inp){
+    let v = inp.value.replace(/\D/g,'').slice(0,16);
+    inp.value = v.replace(/(\d{4})(?=\d)/g,'$1 ');
+  }
+  function formatExpiry(inp){
+    let v = inp.value.replace(/\D/g,'').slice(0,4);
+    if(v.length>=3) v = v.slice(0,2)+' / '+v.slice(2);
+    inp.value = v;
+  }
+
+  /* ===== Payment simulation ===== */
+  function cancelPayment(){ if(confirm('Cancel payment and go back?')) history.back(); }
+
+  function payNow(){
+    const active = document.querySelector('.method.active')?.dataset.method || 'card';
+    if(active==='card'){
+      const n = document.getElementById('cardNumber').value.replace(/\s/g,'');
+      const e = document.getElementById('cardExpiry').value;
+      const c = document.getElementById('cardCVV').value;
+      const nm= document.getElementById('cardName').value.trim();
+      if(n.length<13){return alert('Please enter a valid card number');}
+      if(!/^\d{2}\s\/\s\d{2}$/.test(e)){return alert('Enter expiry as MM / YY');}
+      if(c.length<3){return alert('Enter a valid CVV');}
+      if(!nm){return alert('Enter cardholder name');}
+    }
+    if(active==='net'){
+      if(!document.getElementById('bank').value) return alert('Please choose a bank');
+    }
+    if(active==='upi'){
+      const upi = document.getElementById('upiId').value.trim();
+      if(!/^[\w.\-]{2,}@[A-Za-z]{2,}$/.test(upi)) return alert('Enter a valid UPI ID');
+    }
+
+    const btn = document.querySelector('.btn.primary');
+    btn.disabled = true; btn.textContent = 'PROCESSING...';
+    setTimeout(()=>{
+      btn.disabled = false; btn.textContent = 'PAY NOW';
+      const txn = 'RPY-'+Math.random().toString(36).slice(2,10).toUpperCase();
+      document.getElementById('txnId').textContent = txn;
+      localStorage.setItem('lastTxnId', txn);
+      localStorage.setItem('lastPaymentMethod', active);
+      localStorage.setItem('lastAmount', String(amount));
+      document.getElementById('okBack').style.display='flex';
+    }, 900);
+  }
+
+  function closeOk(){ document.getElementById('okBack').style.display='none'; }
+
+  /* ===== Print summary ===== */
+  function printSummary(){
+    const p = document.getElementById('printArea');
+    const kobWrap = document.getElementById('p_kob'); kobWrap.innerHTML='';
+    (selectedKOBs.length?selectedKOBs:['—']).forEach(k=>{
+      const b=document.createElement('span');b.className='badge';b.textContent=k;kobWrap.appendChild(b);
+    });
+
+    document.getElementById('p_login').textContent   = signupData.loginId || (localStorage.getItem('finalLoginId') || '—');
+    document.getElementById('p_applicant').textContent = signupData.applicant || '—';
+    document.getElementById('p_email').textContent   = signupData.pEmail || '—';
+    document.getElementById('p_mobile').textContent  = signupData.pMobile || '—';
+    document.getElementById('p_belongs').textContent = signupData.pBelongs || '—';
+    document.getElementById('p_amount').textContent  = localStorage.getItem('lastAmount') || amount;
+    document.getElementById('p_txn').textContent     = localStorage.getItem('lastTxnId') || '—';
+    document.getElementById('p_method').textContent  = (localStorage.getItem('lastPaymentMethod') || 'card').toUpperCase();
+    document.getElementById('p_date').textContent    = new Date().toLocaleString();
+
+    const photo = uploadData?.photo?.ok ? `Uploaded (${uploadData.photo.name||''})` : '—';
+    const idp   = uploadData?.id?.ok ? `${uploadData.id.type||'ID'} (${uploadData.id.name||''})` : '—';
+    const other = Array.isArray(uploadData?.other) && uploadData.other.length
+      ? uploadData.other.map(x=>`${x.desc} – ${x.name}`).join('; ')
+      : '—';
+    document.getElementById('p_photo').textContent = photo;
+    document.getElementById('p_id').textContent    = idp;
+    document.getElementById('p_other').textContent = other;
+
+    p.style.display='block';
+    window.print();
+    setTimeout(()=>{p.style.display='none';},0);
+  }
+</script>
+</body>
+</html>
