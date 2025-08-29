@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAATHI – Fill Registration Certificate Details</title>
+<style>
+  :root{
+    --teal:#00796b; --link:#0b5bd3; --warn:#c62828; --soft:#f3f6f9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial, Helvetica, sans-serif;color:#222;background:#fff}
+  a{color:var(--link);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  .top-ribbon{font-size:12px;background:#f6f6f6;border-bottom:1px solid #e7e7e7}
+  .wrap{max-width:1200px;margin:0 auto;padding:6px 12px}
+  .top-flex{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .top-links{display:flex;gap:10px;flex-wrap:wrap}
+  .brand-row{border-bottom:1px solid #e7e7e7;background:#fff}
+  .brand-flex{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 12px}
+  .brand-left,.brand-center,.brand-right{display:flex;align-items:center;gap:10px}
+  .brand-left img,.brand-right img{height:54px}
+  .saathi-title{font-weight:900;color:#0e6f8f;font-size:28px;letter-spacing:.5px}
+  .saathi-sub{font-size:12px;color:#555;margin-top:-6px}
+  .link-bar{border-bottom:1px solid #e7e7e7;background:#fff}
+  .menu{display:flex;gap:8px;flex-wrap:wrap;padding:8px 12px}
+  .menu a{padding:6px 8px;border-radius:4px}
+  .menu a:hover{background:#eef4ff}
+
+  .page-title{font-size:22px;font-weight:700;margin:14px 0 6px 0}
+  .green-note{background:#e0f1df;border:1px solid #a9d6a6;padding:10px;border-radius:4px;color:#1b5e20}
+
+  .section{border:1px solid #ddd;background:#fff;margin:16px 0;padding:0}
+  .section .head{background:#efeeda;color:#333;padding:10px 12px;font-weight:700;border-bottom:1px solid #ddd}
+  .section .body{padding:12px}
+  .row{display:grid;grid-template-columns:220px 1fr 220px 1fr;gap:10px;margin:10px 0}
+  .row.two{grid-template-columns:220px 1fr}
+  label{font-size:14px}
+  .req{color:#d32f2f}
+  input[type="text"],input[type="email"],input[type="date"],input[type="number"],select{
+    width:100%;padding:7px 8px;border:1px solid #bbb;border-radius:4px;background:#fff
+  }
+  .subtle{font-size:12px;color:#666}
+  .note-warn{color:#b22222;font-size:12px;margin-top:6px}
+  .kob-line{display:flex;align-items:center;gap:10px}
+  .kob-list{display:flex;flex-direction:column;gap:8px}
+  .radio-row{display:flex;gap:14px;align-items:center}
+  table{width:100%;border-collapse:collapse;background:#fff}
+  th,td{border:1px solid #cfcfcf;padding:8px;text-align:left}
+  th{background:#efeeda}
+  .btn{border:1px solid #888;background:#fff;padding:6px 10px;border-radius:4px;cursor:pointer;font-weight:600}
+  .btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+  .actionbar{display:flex;gap:12px;justify-content:center;margin:22px 0 40px}
+  .btn.green{background:#0d6b4c;color:#fff;border-color:#0d6b4c}
+  .btn.red{background:#b23b3b;color:#fff;border-color:#b23b3b}
+
+  .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:999}
+  .modal{background:#fff;width:min(680px,94vw);border-radius:10px;overflow:hidden;box-shadow:0 18px 60px rgba(0,0,0,.3)}
+  .modal .head{background:var(--teal);color:#fff;padding:12px 16px;font-weight:700;display:flex;justify-content:space-between}
+  .modal .body{padding:16px}
+  .modal .foot{padding:12px 16px;border-top:1px solid #eee;display:flex;justify-content:flex-end;gap:10px}
+  .close-x{background:#fff;color:#000;border:1px solid #fff;border-radius:6px;padding:4px 8px;cursor:pointer}
+
+  #power-extra{display:none;margin-top:8px}
+  @media (max-width:900px){.row,.row.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="top-ribbon">
+  <div class="wrap top-flex">
+    <div class="top-links">
+      <a href="#">Latest Announcements</a> |
+      <a href="#">FAQ</a> |
+      <a href="#">Become a Partner</a> |
+      <a href="mailto:helpdesk@saathi.gov.in">helpdesk@saathi.gov.in</a> |
+      <span>Call: 1800-11-2100</span>
+    </div>
+    <div style="display:flex;gap:8px;"><a href="#" class="subtle">A+ | A | A-</a></div>
+  </div>
+</div>
+<div class="brand-row">
+  <div class="wrap brand-flex">
+    <div class="brand-left">
+      <img src="assets/india-emblem.png" alt="Government of India">
+      <span class="subtle">Government of India</span>
+    </div>
+    <div class="brand-center" style="flex-direction:column;align-items:center;text-align:center">
+      <div class="saathi-title">SAATHI</div>
+      <div class="saathi-sub">Single Access Approval Touchless Hub Interface</div>
+    </div>
+    <div class="brand-right">
+      <img src="assets/eat-right-india.png" alt="Initiative">
+    </div>
+  </div>
+</div>
+<div class="link-bar">
+  <div class="wrap menu">
+    <a href="index.html">Home</a>
+    <a href="#">About SAATHI</a>
+    <a href="#">Track Application</a>
+    <a href="#">New License / Registration</a>
+    <a href="#">Renew</a>
+    <a href="#">Modify</a>
+    <a href="#">Annual Return</a>
+    <a href="#">Grievance</a>
+    <a href="#">Help</a>
+    <a href="#">User Manual</a>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="page-title">Fill Registration Certificate Details</div>
+  <div class="green-note">
+    <b>Form "A"</b> &nbsp; [See <a href="#">Regulation 2.1.1</a> and <a href="#">Regulation 2.1.7</a>] —
+    Application for Registration under Food Safety and Standards Act, 2006
+  </div>
+
+  <!-- Applicant Details -->
+  <div class="section">
+    <div class="head">Applicant Details</div>
+    <div class="body">
+      <div class="row">
+        <label for="appName">Name of Applicant / Company <span class="req">*</span></label>
+        <input id="appName" type="text" placeholder="Enter name">
+        <label for="designation">Designation <span class="req">*</span></label>
+        <div class="radio-row">
+          <label><input type="radio" name="desig" value="Individual"> Individual</label>
+          <label><input type="radio" name="desig" value="Partner"> Partner</label>
+          <label><input type="radio" name="desig" value="Proprietor"> Proprietor</label>
+          <label><input type="radio" name="desig" value="Cooperative"> Co-operative Society</label>
+          <label><input type="radio" name="desig" value="Other"> Other(s)</label>
+        </div>
+        <label for="pan">Pan No : <span class="req">*</span></label>
+        <div>
+          <input id="pan" type="text" placeholder="ABCDE1234F" style="max-width:260px;">
+          <div class="subtle"><label><input id="noPan" type="checkbox"> I do not possess PAN</label></div>
+          <div class="note-warn">Note: PAN is a business identity as decided by food authority.</div>
+        </div>
+        <label for="aadhaar">Aadhaar No:</label>
+        <div>
+          <input id="aadhaar" type="text" placeholder="XXXX-XXXX-XXXX" style="max-width:260px;">
+          <div class="subtle"><label><input id="noAadhaar" type="checkbox"> I do not possess AADHAAR</label></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kind of Business (from localStorage) -->
+  <div class="section">
+    <div class="head">Kind of Business</div>
+    <div class="body">
+      <div id="kobContainer" class="kob-list">
+        <!-- injected from localStorage; fallback shown if empty -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Address of Premises -->
+  <div class="section">
+    <div class="head">Address of Premises where food business is located</div>
+    <div class="body">
+      <div class="row two">
+        <label for="addr1">Address <span class="req">*</span></label>
+        <input id="addr1" type="text" placeholder="House/Plot/Street, Area, City">
+      </div>
+      <div class="row">
+        <label for="state1">State <span class="req">*</span></label>
+        <select id="state1">
+          <option value="">Select State</option>
+          <option selected>Maharashtra</option>
+        </select>
+
+        <label for="district1">District/Region/Zone <span class="req">*</span></label>
+        <select id="district1"><option value="">Select District</option></select>
+
+        <label for="subdiv1">Sub-Division / Taluka <span class="req">*</span></label>
+        <select id="subdiv1"><option value="">Select Sub-Division</option></select>
+
+        <label for="village1">Village / Town <span class="req">*</span></label>
+        <select id="village1"><option value="">Select Village</option></select>
+
+        <label for="pin1">Pin Code <span class="req">*</span></label>
+        <input id="pin1" type="text" placeholder="6 digits">
+      </div>
+
+      <div class="row two">
+        <label for="landmark1">Nearest Landmark</label>
+        <input id="landmark1" type="text" placeholder="Optional">
+      </div>
+
+      <div class="row two" style="align-items:center">
+        <label>Is your Correspondence Address same as Address of Premises?</label>
+        <div class="radio-row">
+          <label><input type="radio" name="sameAddr" value="Yes" checked> Yes</label>
+          <label><input type="radio" name="sameAddr" value="No"> No</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Correspondence Address -->
+  <div class="section" id="corrSection">
+    <div class="head">Correspondence Address</div>
+    <div class="body">
+      <div class="row two">
+        <label for="addr2">Address <span class="req">*</span></label>
+        <input id="addr2" type="text">
+      </div>
+      <div class="row">
+        <label for="state2">State <span class="req">*</span></label>
+        <select id="state2">
+          <option value="">Select State</option>
+          <option selected>Maharashtra</option>
+        </select>
+
+        <label for="district2">District/Region/Zone <span class="req">*</span></label>
+        <select id="district2"><option value="">Select District</option></select>
+
+        <label for="subdiv2">Sub-Division / Taluka <span class="req">*</span></label>
+        <select id="subdiv2"><option value="">Select Sub-Division</option></select>
+
+        <label for="village2">Village / Town <span class="req">*</span></label>
+        <select id="village2"><option value="">Select Village</option></select>
+
+        <label for="pin2">Pin Code <span class="req">*</span></label>
+        <input id="pin2" type="text">
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Details -->
+  <div class="section">
+    <div class="head">Contact Details</div>
+    <div class="body">
+      <div class="row">
+        <label for="tel">Tel No:</label>
+        <input id="tel" type="text" placeholder="Landline">
+        <label for="mobile">Mobile No: <span class="req">*</span></label>
+        <div class="radio-row">
+          <span>+91</span><input id="mobile" type="text" placeholder="10 digits" style="width:200px">
+        </div>
+
+        <label for="fax">Fax:</label>
+        <input id="fax" type="text" placeholder="">
+        <label for="email">Email-ID:</label>
+        <input id="email" type="email" placeholder="name@example.com">
+
+        <label for="contact">Contact Person:</label>
+        <input id="contact" type="text" placeholder="Full Name">
+      </div>
+      <div class="subtle" style="margin-top:6px">
+        <i>Note: If numbers are private/common, please specify the name of the contact person as well.</i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Years to apply -->
+  <div class="section">
+    <div class="head">Years you want to apply for</div>
+    <div class="body">
+      <div class="row two" style="align-items:center">
+        <label for="years">No. of years you want to apply for: <span class="req">*</span></label>
+        <div>
+          <select id="years">
+            <option value="">Select</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+          </select>
+          <span> Years</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Food items -->
+  <div class="section">
+    <div class="head">Details of food items proposed to be manufactured or sold</div>
+    <div class="body">
+      <div class="note-warn" style="margin-bottom:10px">
+        [Note: Only standardised food products are allowed to be manufactured as per the list available on SAATHI.]
+      </div>
+      <table id="itemsTable">
+        <thead>
+          <tr>
+            <th style="width:60px">Sl. No.</th>
+            <th>Category</th>
+            <th>Sub-Category</th>
+            <th>Product</th>
+            <th>Kind of Business</th>
+            <th style="width:120px">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="serial">1</td>
+            <td>
+              <select class="cat">
+                <option value="">Select</option>
+                <option>Oils & Fats</option>
+                <option>Dairy</option>
+                <option>Meat & Poultry</option>
+              </select>
+            </td>
+            <td>
+              <select class="subcat">
+                <option value="">Select Sub-Food Category</option>
+                <option>Refined Oils</option>
+                <option>Cold-Pressed Oils</option>
+                <option>Butter/Ghee</option>
+              </select>
+            </td>
+            <td>
+              <button class="btn" onclick="openProductModal(this)">Add/Edit Product</button>
+              <div class="subtle product-name"></div>
+            </td>
+            <td>
+              <select class="kob">
+                <option value="">Select</option>
+                <option>Manufacturer</option>
+                <option>Retailer</option>
+                <option>Wholesaler</option>
+              </select>
+            </td>
+            <td><button class="btn primary" onclick="saveAndAddRow(this)">Save & Add</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Food Safety Mitra -->
+  <div class="section">
+    <div class="head">Food Safety Mitra Details (If Applicable)</div>
+    <div class="body">
+      <div class="row two">
+        <label for="fsm">FSM No. :</label>
+        <input id="fsm" type="text" placeholder="Enter FSM No.">
+      </div>
+      <div><a href="#">Add</a></div>
+    </div>
+  </div>
+
+  <!-- Other Details -->
+  <div class="section">
+    <div class="head">Other Details</div>
+    <div class="body">
+      <div class="row">
+        <label for="startDate">In case of business – intended date of start :</label>
+        <input id="startDate" type="date">
+
+        <label>Source of Water Supply : <span class="req">*</span></label>
+        <div class="radio-row">
+          <label><input type="radio" name="water" value="Public"> Public</label>
+          <label><input type="radio" name="water" value="Private"> Private</label>
+          <label><input type="radio" name="water" value="Other"> Other(s)</label>
+          <label><input type="radio" name="water" value="NA" checked> N/A</label>
+        </div>
+
+        <label>Whether any electric power is used in manufacturing of food items:</label>
+        <div>
+          <div class="radio-row" id="power-group">
+            <label><input type="radio" name="power" value="Yes"> Yes</label>
+            <label><input type="radio" name="power" value="No" checked> No</label>
+          </div>
+          <div id="power-extra">
+            <label for="sanctionLoad" style="display:block;margin:8px 0 4px">Sanctioned electricity load (kW/HP)</label>
+            <input type="text" id="sanctionLoad" placeholder="e.g., 25 kW or 40 HP" style="max-width:260px">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="actionbar">
+    <button class="btn green" onclick="saveNext()">Save & Next</button>
+    <button class="btn red" onclick="window.location.href='index.html'">Cancel</button>
+  </div>
+</div>
+
+<!-- Product Modal -->
+<div class="backdrop" id="backdrop">
+  <div class="modal">
+    <div class="head">
+      <span>Add / Edit Product</span>
+      <button class="close-x" onclick="closeModal()">✕</button>
+    </div>
+    <div class="body">
+      <div class="row two">
+        <label for="prodName">Product Name <span class="req">*</span></label>
+        <input id="prodName" type="text" placeholder="e.g., Refined Sunflower Oil (Grade ...)">
+      </div>
+      <div class="row">
+        <label for="prodDesc">Description</label>
+        <input id="prodDesc" type="text" placeholder="Optional">
+        <label for="prodCode">Standard/Code (if any)</label>
+        <input id="prodCode" type="text" placeholder="e.g., FSSAI Code">
+      </div>
+    </div>
+    <div class="foot">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn primary" onclick="applyProduct()">Apply</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ---------- Maharashtra districts → talukas → villages (sample set) ---------- */
+  const MH_DATA = {
+    "Mumbai City": {
+      "Byculla": ["Nagpada","Madhu Park","Agripada"],
+      "Dadar": ["Dadar East","Dadar West","Naigaon"]
+    },
+    "Mumbai Suburban": {
+      "Andheri": ["Andheri East","Andheri West","Marol","J B Nagar"],
+      "Borivali": ["Borivali East","Borivali West","Dahisar"],
+      "Kurla": ["Kurla East","Kurla West","Chembur"]
+    },
+    "Pune": {
+      "Haveli": ["Wagholi","Manjari","Undri","Nanded"],
+      "Mulshi": ["Hinjawadi","Pirangut","Paud"],
+      "Pune City": ["Shivajinagar","Kothrud","Kalyani Nagar","Hadapsar"]
+    },
+    "Thane": {
+      "Thane": ["Wagle Estate","Kopri","Brahmand"],
+      "Kalyan": ["Kalyan East","Kalyan West","Dombivli"],
+      "Mira Bhayandar": ["Mira Road","Bhayandar East","Bhayandar West"]
+    },
+    "Nagpur": {
+      "Nagpur Urban": ["Dharampeth","Civil Lines","Mankapur"],
+      "Hingna": ["Hingna","Jamtha","Digdoh"]
+    },
+    "Nashik": {
+      "Nashik": ["Panchavati","Satpur","Cidco"],
+      "Sinnar": ["Sinnar","Malegaon MIDC","Pimpalgaon"]
+    },
+    "Kolhapur": {
+      "Karvir": ["Shahupuri","Tarabai Park","Rajarampuri"],
+      "Hatkanangle": ["Ichalkaranji","Kabnoor","Yadrav"]
+    },
+    "Chhatrapati Sambhajinagar": {
+      "Aurangabad": ["Cidco N-1","Waluj","Beed Bypass"],
+      "Gangapur": ["Lasur","Gangapur","Nathnagar"]
+    }
+  };
+
+  /* ---------- UTILITIES ---------- */
+  function fillSelect(select, options, placeholder="Select"){
+    select.innerHTML = `<option value="">${placeholder}</option>`;
+    options.forEach(o=>{
+      const opt = document.createElement('option');
+      opt.value = o; opt.textContent = o;
+      select.appendChild(opt);
+    });
+  }
+
+  function setupCascading(prefix){
+    const districtSel = document.getElementById(`district${prefix}`);
+    const subSel = document.getElementById(`subdiv${prefix}`);
+    const villageSel = document.getElementById(`village${prefix}`);
+
+    // Fill districts initially (Maharashtra only)
+    fillSelect(districtSel, Object.keys(MH_DATA), "Select District");
+    fillSelect(subSel, [], "Select Sub-Division");
+    fillSelect(villageSel, [], "Select Village");
+
+    districtSel.addEventListener('change', ()=>{
+      const d = districtSel.value;
+      if(!d || !MH_DATA[d]) {
+        fillSelect(subSel, [], "Select Sub-Division");
+        fillSelect(villageSel, [], "Select Village");
+        return;
+      }
+      fillSelect(subSel, Object.keys(MH_DATA[d]), "Select Sub-Division");
+      fillSelect(villageSel, [], "Select Village");
+    });
+
+    subSel.addEventListener('change', ()=>{
+      const d = districtSel.value;
+      const t = subSel.value;
+      if(!d || !t || !MH_DATA[d] || !MH_DATA[d][t]) {
+        fillSelect(villageSel, [], "Select Village");
+        return;
+      }
+      fillSelect(villageSel, MH_DATA[d][t], "Select Village");
+    });
+  }
+
+  // Copy correspondence address when "Yes"
+  function syncCorrespondence(){
+    const yes = document.querySelector('input[name="sameAddr"][value="Yes"]').checked;
+    const ids = ["addr","district","subdiv","village","pin"];
+    ids.forEach(id=>{
+      const src = document.getElementById(id+"1");
+      const dst = document.getElementById(id+"2");
+      if(!src || !dst) return;
+      if(yes){
+        dst.value = src.value;
+        dst.setAttribute('readonly', id.includes('district')||id.includes('subdiv')||id.includes('village') ? false : true);
+      } else {
+        dst.removeAttribute('readonly');
+      }
+    });
+    document.getElementById('corrSection').style.opacity = yes ? .7 : 1;
+  }
+
+  // Electric power toggle
+  function handlePowerToggle(){
+    const yes = document.querySelector('input[name="power"][value="Yes"]').checked;
+    document.getElementById('power-extra').style.display = yes ? 'block' : 'none';
+  }
+
+  // Product modal
+  let currentRow = null;
+  function openProductModal(btn){
+    currentRow = btn.closest('tr');
+    const name = currentRow.querySelector('.product-name')?.textContent?.trim();
+    document.getElementById('prodName').value = name || "";
+    document.getElementById('prodDesc').value = "";
+    document.getElementById('prodCode').value = "";
+    document.getElementById('backdrop').style.display='flex';
+  }
+  function closeModal(){ document.getElementById('backdrop').style.display='none'; }
+  function applyProduct(){
+    const val = document.getElementById('prodName').value.trim();
+    if(!val){ alert('Please enter product name.'); return; }
+    currentRow.querySelector('.product-name').textContent = val;
+    closeModal();
+  }
+  function saveAndAddRow(btn){
+    const row = btn.closest('tr');
+    const cat = row.querySelector('.cat').value;
+    const sub = row.querySelector('.subcat').value;
+    const prod = row.querySelector('.product-name').textContent.trim();
+    if(!cat || !sub || !prod){ alert('Please select Category, Sub-Category and set Product.'); return; }
+    const tbody = document.querySelector('#itemsTable tbody');
+    const clone = row.cloneNode(true);
+    const newIndex = tbody.children.length + 1;
+    clone.querySelector('.serial').textContent = newIndex;
+    clone.querySelector('.cat').value = "";
+    clone.querySelector('.subcat').value = "";
+    clone.querySelector('.product-name').textContent = "";
+    clone.querySelector('.kob').value = "";
+    clone.querySelector('.btn.primary').onclick = function(){ saveAndAddRow(this); };
+    clone.querySelector('.btn').onclick = function(){ openProductModal(this); };
+    tbody.appendChild(clone);
+    alert('Row saved.');
+  }
+
+  function saveNext(){
+    // Basic minimal check: applicant, mobile, district, village
+    if(!document.getElementById('appName').value.trim()){
+      alert('Please enter Applicant/Company name.'); return;
+    }
+    if(!document.getElementById('mobile').value.trim()){
+      alert('Please enter Mobile number.'); return;
+    }
+    if(!document.getElementById('district1').value || !document.getElementById('village1').value){
+      alert('Please complete the Premises address (district, sub-division, village).'); return;
+    }
+    if(document.querySelector('input[name="power"][value="Yes"]').checked && !document.getElementById('sanctionLoad').value.trim()){
+      alert('Please enter sanctioned electricity load.'); return;
+    }
+    // All good → go to next page
+    window.location.href = 'i.html';
+  }
+
+  // Pull KOB list from localStorage (set on previous page)
+  function renderKOBs(){
+    const container = document.getElementById('kobContainer');
+    container.innerHTML = "";
+    let kob = [];
+    try{
+      const raw = localStorage.getItem('selectedKOBs');
+      if(raw) kob = JSON.parse(raw); // expect array of strings like "Main — Suboption"
+    }catch(e){}
+    if(!kob || kob.length===0){
+      // fallback
+      const line = document.createElement('div'); line.className='kob-line';
+      line.innerHTML = `<input id="kob1" type="checkbox" checked>
+                        <label for="kob1">Manufacturer – Vegetable oil and processing units</label>`;
+      container.appendChild(line);
+      return;
+    }
+    kob.forEach((txt,i)=>{
+      const line = document.createElement('div'); line.className='kob-line';
+      const id = `kob_${i}`;
+      line.innerHTML = `<input id="${id}" type="checkbox" checked>
+                        <label for="${id}">${txt}</label>`;
+      container.appendChild(line);
+    });
+  }
+
+  /* ---------- Init ---------- */
+  document.addEventListener('DOMContentLoaded', ()=>{
+    // Cascading selects for both address blocks
+    setupCascading('1');
+    setupCascading('2');
+
+    // Default state (Maharashtra) already selected; populate districts
+    // (trigger a change to fill sub-levels)
+    document.getElementById('district1').dispatchEvent(new Event('change'));
+    document.getElementById('district2').dispatchEvent(new Event('change'));
+
+    // Same-as toggle
+    document.querySelectorAll('input[name="sameAddr"]').forEach(r=>r.addEventListener('change', syncCorrespondence));
+    syncCorrespondence();
+
+    // Power toggle
+    document.querySelectorAll('input[name="power"]').forEach(r=>r.addEventListener('change', handlePowerToggle));
+    handlePowerToggle();
+
+    // KOB render
+    renderKOBs();
+  });
+</script>
+
+</body>
+</html>
