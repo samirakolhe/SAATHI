@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAATHI – Officer Dashboard</title>
+<style>
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f5f6fa;color:#1e1e1e}
+  header{background:#024d43;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center}
+  header h1{margin:0;font-size:20px}
+  header .right{font-size:14px}
+  .main{display:flex;min-height:calc(100vh - 50px)}
+  .sidebar{width:220px;background:#013a33;color:#fff;flex-shrink:0;padding:10px}
+  .sidebar h3{margin:10px 0;padding:8px;border-bottom:1px solid #035045;font-size:14px}
+  .sidebar ul{list-style:none;padding:0;margin:0}
+  .sidebar li{margin:6px 0}
+  .sidebar a{color:#fff;text-decoration:none;display:block;padding:6px;border-radius:4px;font-size:14px}
+  .sidebar a:hover{background:#03695f}
+  .content{flex:1;padding:20px;overflow:auto}
+
+  /* KPI Widgets */
+  .kpis{display:flex;gap:15px;flex-wrap:wrap}
+  .kpi{flex:1;min-width:160px;background:#fff;padding:16px;border-radius:6px;box-shadow:0 2px 5px rgba(0,0,0,0.1);text-align:center}
+  .kpi h2{margin:0;font-size:22px;color:#024d43}
+  .kpi span{font-size:14px;color:#555}
+
+  /* Filters */
+  .filters{margin:20px 0;display:flex;gap:10px;flex-wrap:wrap}
+  select,input{padding:8px;border:1px solid #ccc;border-radius:4px}
+
+  /* Panels */
+  .panel{background:#fff;border-radius:6px;box-shadow:0 2px 5px rgba(0,0,0,0.1);margin-bottom:20px}
+  .panel h3{margin:0;padding:12px;background:#f0f9f8;border-bottom:1px solid #ddd}
+  .panel-body{padding:15px}
+
+  table{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px}
+  th,td{border:1px solid #ccc;padding:8px;text-align:left}
+  th{background:#f0f9f8}
+  td.empty{text-align:center;color:#888;font-style:italic}
+
+  .actions button{padding:6px 10px;margin:4px;border:none;border-radius:4px;cursor:pointer}
+  .approve{background:#388e3c;color:#fff}
+  .reject{background:#d32f2f;color:#fff}
+  .info{background:#fbc02d;color:#000}
+  .assign{background:#0288d1;color:#fff}
+
+  /* Notifications & Messages */
+  .messages{max-height:200px;overflow-y:auto}
+  .msg{padding:6px;border-bottom:1px solid #eee;font-size:13px}
+  .msg strong{color:#024d43}
+
+  /* Reporting */
+  .charts{display:flex;gap:20px;flex-wrap:wrap}
+  .chart{flex:1;min-width:260px;background:#fff;padding:15px;border-radius:6px;box-shadow:0 2px 5px rgba(0,0,0,0.1)}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>SAATHI – Officer Dashboard</h1>
+  <div class="right">
+    Welcome Officer | <span id="date"></span> | <a href="index.html" style="color:#ffd">Logout</a>
+  </div>
+</header>
+
+<div class="main">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h3>Navigation</h3>
+    <ul>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#review">Application Review</a></li>
+      <li><a href="#inspection">Inspection Scheduling</a></li>
+      <li><a href="#messages">Notifications & Messages</a></li>
+      <li><a href="#reports">Reports & Analytics</a></li>
+    </ul>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <!-- KPIs -->
+    <section id="overview">
+      <h2>Overview</h2>
+      <div class="kpis">
+        <div class="kpi"><h2>12</h2><span>Pending Applications</span></div>
+        <div class="kpi"><h2>8</h2><span>In-progress</span></div>
+        <div class="kpi"><h2>25</h2><span>Completed</span></div>
+        <div class="kpi"><h2>3 Days</h2><span>Avg. Processing Time</span></div>
+      </div>
+
+      <div class="filters">
+        <select><option>Filter by Department</option><option>Manufacturing</option><option>Storage</option><option>Restaurant</option></select>
+        <select><option>Filter by Status</option><option>Pending</option><option>Approved</option><option>Rejected</option></select>
+        <input type="date"/>
+        <input type="text" placeholder="Search by Area"/>
+      </div>
+    </section>
+
+    <!-- Application Review -->
+    <section id="review" class="panel">
+      <h3>Application Review Panel</h3>
+      <div class="panel-body">
+        <p><b>Applicant:</b> (Loaded dynamically from backend)</p>
+        <p><b>e-KYC:</b> Verified ✅</p>
+        <h4>Documents</h4>
+        <table>
+          <tr><th>Document</th><th>File</th><th>Verify</th></tr>
+          <tr><td>Photo</td><td>Uploaded</td><td><button class="info">QR Verify</button></td></tr>
+          <tr><td>ID Proof</td><td>DigiLocker Linked</td><td><button class="info">QR Verify</button></td></tr>
+        </table>
+        <h4>Media</h4>
+        <p>[Geo-tagged images, video inspection stream placeholder]</p>
+        <div class="actions">
+          <button class="approve">Approve</button>
+          <button class="reject">Reject</button>
+          <button class="info">Request Info</button>
+          <button class="assign">Assign Inspection</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inspection Scheduling -->
+    <section id="inspection" class="panel">
+      <h3>Inspection Scheduling</h3>
+      <div class="panel-body">
+        <p><b>Upcoming Inspections:</b></p>
+        <table>
+          <tr><th>Date</th><th>Applicant</th><th>Type</th><th>Inspector</th><th>Status</th></tr>
+          <tr><td colspan="5" class="empty">No inspections scheduled</td></tr>
+        </table>
+        <p><b>Assign New Inspection:</b></p>
+        <input type="date"/> <input type="text" placeholder="Applicant Ref No"/> 
+        <button class="assign">Schedule</button>
+      </div>
+    </section>
+
+    <!-- Notifications -->
+    <section id="messages" class="panel">
+      <h3>Notifications & Messages</h3>
+      <div class="panel-body messages">
+        <div class="msg"><strong>System:</strong> New application pending review.</div>
+        <div class="msg"><strong>Admin:</strong> Please prioritize inspections this week.</div>
+      </div>
+    </section>
+
+    <!-- Reports -->
+    <section id="reports" class="panel">
+      <h3>Reports & Analytics</h3>
+      <div class="panel-body charts">
+        <div class="chart">
+          <h4>Applications by Status</h4>
+          <p>[Chart Placeholder]</p>
+        </div>
+        <div class="chart">
+          <h4>Average Processing Time</h4>
+          <p>[Chart Placeholder]</p>
+        </div>
+      </div>
+      <button onclick="window.print()">Print Report</button>
+    </section>
+  </div>
+</div>
+
+<script>
+  document.getElementById("date").textContent = new Date().toLocaleString();
+</script>
+
+</body>
+</html>
